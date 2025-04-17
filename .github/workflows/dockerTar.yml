@@ -18,7 +18,6 @@ jobs:
     - name: Clonar el repositorio
       uses: actions/checkout@v3
 
-
     - name: Construir las imágenes Docker
       run: |
         docker build -t nginx:latest -f nginx .

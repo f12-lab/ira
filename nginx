@@ -1,12 +1,10 @@
 FROM nginx:latest
 
-
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
 RUN mkdir /usr/share/nginx/html/uploads && \
 chown -R www-data:www-data /usr/share/nginx/html/ && \
 chmod -R 755 /usr/share/nginx/html
-
 
 COPY ./nginxFiles/nginx.conf /etc/nginx/
 COPY ./nginxFiles/default /etc/nginx/sites-enabled/default

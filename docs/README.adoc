@@ -1,6 +1,6 @@
 = Ira
 :author: Manuel L. Quero
-:toc: right
+:toc: left
 :doctype: book
 
 <<<

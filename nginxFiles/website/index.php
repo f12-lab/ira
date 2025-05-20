@@ -7,8 +7,8 @@ if (isset($_SESSION["auth"]) && $_SESSION["auth"] === true) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario = $_POST["user"] ?? "";
-    $contrasena = $_POST["pass"] ?? "";
+    $usuario = $_POST["user"];
+    $contrasena = $_POST["pass"];
 
     if ($usuario === "admin" && $contrasena === "qwerty123") {
         $_SESSION["auth"] = true;

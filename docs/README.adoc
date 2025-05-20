@@ -26,7 +26,7 @@ $ sudo bash auto_deploy.sh ira.tar
 
 Un ataque de fuerza bruta utiliza el método de prueba y error para adivinar la información de inicio de sesión, las claves de cifrado o encontrar una página web oculta. Los hackers estudian todas las combinaciones posibles con la esperanza de acertar. Aunque todos los ataques de fuerza bruta comparten este principio básico de «prueba y error», existen diferentes tipos de ataques de este tipo, cada uno con su propia metodología y estrategia.
 
-A continuación vamos a ver los tipos de ataques más frecuentes:
+A continuación, vamos a ver los tipos de ataques más frecuentes:
 
 === 1. Ataque de fuerza bruta estándar
 
@@ -34,7 +34,7 @@ Este es el ataque de fuerza bruta en su forma más básica. El atacante intenta 
 
 === 2. Ataque de fuerza bruta con diccionario
 
-Un ataque de diccionario es aquel en el que el atacante selecciona un objetivo y luego prueba las posibles contraseñas contra el nombre de usuario de esa persona, usando un software normalmente. Este método es más rápido que un ataque de fuerza bruta estándar, aún así suele llevar mucho tiempo y tiene una baja probabilidad de éxito en comparación con los métodos de ataque más nuevos y efectivos.
+Un ataque de diccionario es aquel en el que el atacante selecciona un objetivo y luego prueba las posibles contraseñas contra el nombre de usuario de esa persona, usando un software normalmente. Este método es más rápido que un ataque de fuerza bruta estándar, aún así, suele llevar mucho tiempo y tiene una baja probabilidad de éxito en comparación con los métodos de ataque más nuevos y efectivos.
 
 === 3. Ataques de fuerza bruta híbrida 
 
@@ -78,7 +78,7 @@ El Intruder de Burpsuite tiene cuatro modos de operar, nosotros utilizaremos dos
 
 . *Sniper* -> Este modo prueba una lista de payloads en cada posición de forma individual, manteniendo las demás constantes. Es útil para detectar vulnerabilidades como inyecciones SQL o XSS en parámetros específicos. Por ejemplo, si tienes tres parámetros y una lista de 100 payloads, se realizarán 300 solicitudes (100 por cada parámetro).
 
-. *Battering Ram* -> En este se aplica el mismo payload en todas las posiciones marcadas simultáneamente. Sirve para cuando el mismo valor debe estar presente en múltiples campos, como un token que aparece en varios lugares. Por ejemplo, si marcas dos posiciones y tienes una lista de 50 payloads, se realizarán 50 solicitudes, cada una con el mismo payload en ambas posiciones.​
+. *Battering Ram* -> En este se aplica el mismo payload en todas las posiciones marcadas simultáneamente. Sirve para cuando el mismo valor debe estar presente en múltiples campos, como un token que aparece en varios lugares. Por ejemplo, si marcas dos posiciones y tienes una lista de 50 payloads, se realizarán 50 solicitudes, cada una con el mismo payload en ambas posiciones.
 
 . *Pitchfork* -> Este utiliza diferentes listas de payloads para cada posición, insertando los payloads correspondientes en paralelo. Se utiliza cuando se necesita probar combinaciones específicas de valores relacionados, como pares de usuario y contraseña correspondientes. Por ejemplo, si tienes dos listas de 100 elementos cada una, se realizarán 100 solicitudes, combinando el primer elemento de cada lista, luego el segundo, y así sucesivamente.
 
@@ -141,7 +141,7 @@ monkey
 ----
 ====
 
-Hay ocasiones en las que no sabremos la identidad del usuario, pero podriamos hacernos a la idea si hacemos un ataque de OSINT a la víctima, conociendo: 
+Hay ocasiones en las que no sabremos la identidad del usuario, pero podríamos hacernos a la idea si hacemos un ataque de OSINT a la víctima, conociendo: 
 
 * *RRSS*
 
@@ -171,7 +171,7 @@ https://www.kali.org/tools/maltego/[Maltego] -> Permite visualizar relaciones en
 
 https://www.kali.org/tools/spiderfoot/[SpiderFoot] -> Automatiza la recopilación de información sobre una entidad específica, incluyendo direcciones IP, nombres de usuario y más.
 
-https://www.kali.org/tools/sherlock/[Sherlock] -> Sirve para localizar el nombre de usario en distintas plataformas.
+https://www.kali.org/tools/sherlock/[Sherlock] -> Sirve para localizar el nombre de usuario en distintas plataformas.
 
 https://osintframework.com/[OSINT Framework] -> Un conjunto de herramientas categorizadas para facilitar la investigación OSINT.
 
@@ -179,19 +179,19 @@ https://www.kali.org/tools/recon-ng/[Recon-ng] -> Framework de reconocimiento we
 
 ==== 2. Ataque de fuerza bruta con diccionario
 
-En este ataque, aunque ya fue visto en la anterior máquina, lo vimos a través de wpscan. En cambio en esta lo veremos con hydra y burpsuite.
+En este ataque, aunque ya fue visto en la anterior máquina, lo vimos a través de wpscan. En cambio, en esta lo veremos con hydra y burpsuite.
 
-Kali viene con varios diccionarios preinstalados en la ruta /usr/share/wordlist. A mi en especial me gusta mucho el de https://github.com/danielmiessler/SecLists[Seclists], ya que es muy completo. Pero hay que saber usar diccionarios, ya que si usamos primeramente unos muy fuertes nos va a tardar mucho, ya que la desventaja principal de los ataques de fuerza bruta es que usan muchos recursos del ordenador donde se ejecuta y dependiendo de eso, tardará más o menos.
+Kali viene con varios diccionarios preinstalados en la ruta /usr/share/wordlist. A mí en especial me gusta mucho el de https://github.com/danielmiessler/SecLists[Seclists], ya que es muy completo. Pero hay que saber usar diccionarios, ya que si usamos primeramente unos muy fuertes nos va a tardar mucho, ya que la desventaja principal de los ataques de fuerza bruta es que usan muchos recursos del ordenador donde se ejecuta y dependiendo de eso, tardará más o menos.
 
 ===== Hydra
 
 Cómo no conocemos ni el usuario ni la contraseña, tendremos que usar diccionarios en ambos campos. Pero antes de esto deberemos hacer un estudio de la página, para saber si usa POST o GET, y ver los IDs de los campos:
 
-Si le damos al F12 podremos inspeccionar la estructura de la página, viendo que en los campos del usuario y contraseña, sus IDs son *user* y *pass*.
+Si le damos al F12 podremos inspeccionar la estructura de la página, viendo que, en los campos del usuario y contraseña, sus IDs son *user* y *pass*.
 
 image::assets/Fuerza Bruta/Diccionario/IDs.png[ID,align=center]
 
-Si le damos a Network y enviamos unas credenciales erroneas, veremos que se envían mediante *POST*, además de poder ver la url que será importante para el siguiente comando. Además de conocer el mensaje de error que nos devuelve para poder filtrar, en este caso *"Credenciales incorrectas."*.
+Si le damos a Network y enviamos unas credenciales erróneas, veremos que se envían mediante *POST*, además de poder ver la url que será importante para el siguiente comando. Además de conocer el mensaje de error que nos devuelve para poder filtrar, en este caso *"Credenciales incorrectas."*.
 
 image::assets/Fuerza Bruta/Diccionario/POST.png[POST,align=center]
 
@@ -225,7 +225,7 @@ De esta forma, podremos acceder mediante el uso de diccionarios, pero en este ca
 
 ===== Burpsuite
 
-Primeramente recomiendo instalar FoxyProxy en nuestro navegador. Cuando estemos dentro de este, deberemos irnos a Proxies y crear uno nuevo dándole a Add. Deberemos poner la siguiente configuración, para interceptar con Burpsuite en local desde el puerto 8081. Además deberemos añadir en la parte de patrones el que aparece en la siguiente imagen:
+Primeramente, recomiendo instalar FoxyProxy en nuestro navegador. Cuando estemos dentro de este, deberemos irnos a Proxies y crear uno nuevo dándole a Add. Deberemos poner la siguiente configuración, para interceptar con Burpsuite en local desde el puerto 8081. Además, deberemos añadir en la parte de patrones el que aparece en la siguiente imagen:
 
 image::assets/Fuerza Bruta/Diccionario/Burp/FoxyProxy.png[FoxyProxy Config,width=540,align=center]
 
@@ -237,13 +237,13 @@ Ahora abrimos Burpsuite y creamos un proyecto temporal, ya que tendremos la vers
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp1.png[Burpsuite,width=540,align=center]
 
-En Burpsuite, en la parte de Proxy, le damos a *Intercept off* para pasarlo a *on* y comenzar a capturar el tráfico. Y en nuestra página ponemos cualquier credenciales y le damos a entrar, enviándonos a Burpsuite directamente.
+En Burpsuite, en la parte de Proxy, le damos a *Intercept off* para pasarlo a *on* y comenzar a capturar el tráfico. Y en nuestra página ponemos cualquier credencial y le damos a entrar, enviándonos a Burpsuite directamente.
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp2.png[Burpsuite2,align=center]
 
 image::assets/Fuerza Bruta/Diccionario/Burp/LoginBurp.png[Enviar petición,align=center]
 
-En Burpsuite, nos aparecerá la petición POST que hemos capturado, donde podremos ver los IDs de los campos, por lo que para atacar desde Burpsuite, deberemos pasar esta petición al intruder, le damos clic derecho sobre la petición y la enviamo a este:
+En Burpsuite, nos aparecerá la petición POST que hemos capturado, donde podremos ver los IDs de los campos, por lo que para atacar desde Burpsuite, deberemos pasar esta petición al intruder, le damos clic derecho sobre la petición y la enviamos a este:
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Burp3.png[Burpsuite2,align=center]
 
@@ -253,13 +253,13 @@ Una vez en el Intruder, deberemos darle al desplegable de arriba y cambiarlo a *
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder2.png[Intruder2,align=center]
 
-A la derecha nos pedirá igresar un payload, es decir, los diccionarios y deberemos poner el correspondiente payload en la posición correcta. En el 1 va el de los usuario y le pongo el diccionario de nombres de usuario frecuentes y en el 2 va la contraseña y por ello le pongo el diccionario de contraseñas sencillas.
+A la derecha nos pedirá ingresar un payload, es decir, los diccionarios y deberemos poner el correspondiente payload en la posición correcta. En el 1 va el de los usuarios y le pongo el diccionario de nombres de usuario frecuentes y en el 2 va la contraseña y por ello le pongo el diccionario de contraseñas sencillas.
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder3.png[Intruder3,width=580,align=center]
 
 image::assets/Fuerza Bruta/Diccionario/Burp/Intruder4.png[Intruder4,width=580,align=center]
 
-Además en la configuración del Intruder deberemos cambiar dos cosas:
+Además, en la configuración del Intruder deberemos cambiar dos cosas:
 
 * *Redirections* -> Deberemos poner Always para aceptar las redirecciones.
 
@@ -312,7 +312,7 @@ $ crunch 7 7 @@@@123 >> diccionario.txt
 $ crunch 7 7 user^^^ >> diccionario.txt
 ----
 
-En este ataque vamos a atacar directamente a la cuenta *admin* con hydra. De esta forma veremos el uso del parametro -l y como actuar en caso de conocer al usuario.
+En este ataque vamos a atacar directamente a la cuenta *admin* con hydra. De esta forma veremos el uso del parámetro -l y cómo actuar en caso de conocer al usuario.
 
 [source,bash]
 ----
@@ -325,7 +325,7 @@ image::assets/Fuerza Bruta/Hibrido/Hydra/Ataque.png[Ataque,align=center]
 
 ===== Burpsuite
 
-En este caso, realizaremos lo ya visto anteriormente hasta la parte del Intruder. En este caso, vamos a usar el Sniper attack, donde se usa en una posicion, un objetivo. Deberemos añadir los símbolos en la parte de la contraseña.
+En este caso, realizaremos lo ya visto anteriormente hasta la parte del Intruder. En este caso, vamos a usar el Sniper attack, donde se usa en una posición, un objetivo. Deberemos añadir los símbolos en la parte de la contraseña.
 
 image::assets/Fuerza Bruta/Hibrido/Burp/Intruder1.png[Intruder1,align=center]
 
@@ -351,7 +351,7 @@ image::assets/Fuerza Bruta/Hibrido/Burp/Ataque1.png[Ataque1,align=center]
 
 image::assets/Fuerza Bruta/Hibrido/Burp/Ataque2.png[Ataque2,align=center]
 
-Podemos observar que con el último sufijo que hemos introducido es correcto, ya que a variado la longitud. Y cuando quitemos el proxy ya estermos dentro.
+Podemos observar que con el último sufijo que hemos introducido es correcto, ya que ha variado la longitud. Y cuando quitemos el proxy ya extermos dentro.
 
 ==== 4. Ataques de fuerza bruta inversa
 
@@ -384,7 +384,7 @@ Como podemos observar el usuario correcto es *admin*.
 
 === RCE
 
-Una vez dentro, gracias a los ataques de fuerza bruta, en el panel de administrador se puede acceder a una linea de comandos para administrar desde la web, y también se puede acceder a una página para subir archivos y poder verlos mediante un enlace. A continuación vamos a ver estos dos tipos de ataque RCE:
+Una vez dentro, gracias a los ataques de fuerza bruta, en el panel de administrador se puede acceder a una linea de comandos para administrar desde la web, y también se puede acceder a una página para subir archivos y poder verlos mediante un enlace. A continuación, vamos a ver estos dos tipos de ataque RCE:
 
 ==== 1. RCE directo mediante inyección de comandos.
 
@@ -426,7 +426,7 @@ image::assets/RCE/CMD/uname.png[comando uname,align=center]
 
 ===== Reverse Shell
 
-Al ser root, podemos hacer todo lo que queramos, cómo si queremos borrar todo el sistema, pero también podemos mantenernos persistentes en él o acceder para tener una terminal más comoda. Hay miles de cosas que podemos hacer en está situación, por lo que vamos a ver cómo realizar una reverse shell desde la web.
+Al ser root, podemos hacer todo lo que queramos, cómo si queremos borrar todo el sistema, pero también podemos mantenernos persistentes en él o acceder para tener una terminal más cómoda. Hay miles de cosas que podemos hacer en esta situación, por lo que vamos a ver cómo realizar una reverse shell desde la web.
 
 Abrimos una terminal con netcat y nos ponemos a la escucha:
 
@@ -447,7 +447,7 @@ Una vez hecho esto ya estaremos conectados con netcat como root:
 
 image::assets/RCE/CMD/NetCat3.png[NetCat 3,align=center]
 
-Ya que somos root, y estamos con infltrados en el sistema, he pensado que estaría bien tener en cuenta algunas prácticas para limpiar nuestro rastro:
+Ya que somos root, y estamos como infltrados en el sistema, he pensado que estaría bien tener en cuenta algunas prácticas para limpiar nuestro rastro:
 
 * *1. Crear directorios ocultos*
 
@@ -532,7 +532,7 @@ Con opciones para borrar registros y desactivar el historial de Bash y autentica
 
 ==== 2. RCE mediante subida de archivos maliciosos.
 
-Ahora nos iremos a la parte de subir archivos, donde primeramente provaremos a subir uno de ejemplo:
+Ahora nos iremos a la parte de subir archivos, donde primeramente probaremos a subir uno de ejemplo:
 
 image::assets/RCE/archivos/Página.png[Página,align=center]
 
@@ -550,7 +550,7 @@ Como podemos observar, podemos abrir estos archivos, por lo que vamos a realizar
 
 image::assets/RCE/archivos/WebShell.png[WebShell,width=440,align=center]
 
-De esta forma, a través de este archivo podremos ejecutar comandos como administrador, deremos usar lo siguiente en la url del archivo "?cmd=(comando)", así enviamos el comando para que el GET lo obtenga y lo pase.
+De esta forma, a través de este archivo podremos ejecutar comandos como administrador, daremos usar lo siguiente en la url del archivo "?cmd=(comando)", así enviamos el comando para que el GET lo obtenga y lo pase.
 
 image::assets/RCE/archivos/WebShell2.png[WebShell2,align=center]
 
